@@ -2,20 +2,23 @@
 epilepsy - epilepsy.c
 (ↄ) 2012 Lee
 Released under the WTFPL
+
+Compiles with "gcc -lncurses epilepsy.c -std=c99 -Wall -Wshadow -Wextra"
+
 */
 
-#include <ncurses.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
+#include <ncurses.h>
+
 int main(int argc, char *argv[])
 {
-	int ch;
 	int rows, cols;
-	int curr_col = 0;
 	int pair_num;
+	int speed = 10;
 
 	if (argc >= 2)
 	{
@@ -52,23 +55,17 @@ int main(int argc, char *argv[])
 	init_pair(9, COLOR_BLACK, COLOR_MAGENTA);
 	init_pair(10, COLOR_BLACK, COLOR_WHITE);
 
-	timeout(10);
-	
+	timeout(speed);
+
 	while(1)
 	{
-		ch = getch();
-		if(ch == KEY_UP)
+		if(getch() == KEY_UP)
 		{
 			endwin();
 			break;
 		}
 		for(int i = 0; i < rows; i++)
 		{
-			pair_num = rand() % 10 + 1;
-			attron(COLOR_PAIR(pair_num));
-			mvprintw(i,curr_col," ");
-			attroff(COLOR_PAIR(pair_num));
-
 			for(int j = 0; j < cols; j++)
 			{
 				pair_num = rand() % 10 + 1;
